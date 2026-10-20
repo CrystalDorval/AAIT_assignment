@@ -1,0 +1,6 @@
+notebooks
+plots
+tests
+data/*
+!data/processed
+!data/processed/**
