@@ -9,9 +9,9 @@ def main():
     rest = data.drop(train.index)
     validate = rest.sample(frac=0.5, random_state=1337)
     test = rest.drop(validate.index)
-    train.to_csv("data/processed/train.csv")
-    validate.to_csv("data/processed/validate.csv")
-    test.to_csv("data/processed/test.csv")
+    train.to_csv("data/processed/train.csv", index=False)
+    validate.to_csv("data/processed/validate.csv", index=False)
+    test.to_csv("data/processed/test.csv", index=False)
 
 
 if __name__ == "__main__":
