@@ -8,6 +8,7 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 import tensorflow as tf
 from tensorflow.keras import layers
+import pickle
 
 
 def linear(train: pd.DataFrame, test: pd.DataFrame, target):
@@ -22,6 +23,9 @@ def linear(train: pd.DataFrame, test: pd.DataFrame, target):
     print("MAE :", mean_absolute_error(yte, y_pred))
     print("RMSE:", mean_squared_error(yte, y_pred) ** 0.5)
     print("R2  :", r2_score(yte, y_pred))
+    s_target = target.replace("/", "_")
+    with open(f"models/linear/{s_target}.pkl", 'wb') as f:
+        pickle.dump(model, f)
 
 def forest_regressors(train: pd.DataFrame, test: pd.DataFrame, target):
     xt = train.drop(columns=target)
@@ -35,6 +39,9 @@ def forest_regressors(train: pd.DataFrame, test: pd.DataFrame, target):
     print("MAE :", mean_absolute_error(yte, y_pred))
     print("RMSE:", mean_squared_error(yte, y_pred) ** 0.5)
     print("R2  :", r2_score(yte, y_pred))
+    s_target = target.replace("/", "_")
+    with open(f"models/random_forest/{s_target}.pkl", 'wb') as f:
+        pickle.dump(model, f)
 
 def DNN(train: pd.DataFrame, test: pd.DataFrame, val: pd.DataFrame, target):
     xt = train.drop(columns=target)
@@ -85,8 +92,8 @@ def main():
     for col in cols:
         forest_regressors(num_train, num_test, col)
     print("\n\n\nDNN\n\n\n")
-    for col in cols:
-        DNN(num_train, num_test, num_validate, col)
+    #for col in cols:
+        #DNN(num_train, num_test, num_validate, col)
 
 
 if __name__ == "__main__":
