@@ -17,6 +17,9 @@ df_num = df.drop(columns=['Station', 'Date', 'outlier score'])
 cols = df.columns.to_list()
 num_cols = df_num.columns.to_list()
 
+model_stats = pd.read_csv("data/processed/stats.csv")
+
+
 
 
 st.subheader("Dataset Overview")
@@ -49,3 +52,15 @@ c3.subheader("Day by Day")
 c3_day = c3.selectbox("Date", df['Date'].unique().tolist())
 c3_target = c3.multiselect("Polutant", num_cols, key='c3_pols')
 c3.scatter_chart(df[df['Date']==c3_day], x='Station', y=c3_target)
+
+st.title("Model Analysis")
+mc1, mc2 = st.columns(2)
+mc1.dataframe(model_stats)
+mc2.subheader("Fine Comparison")
+comp_axis = mc2.selectbox("Compare Across", ["Model Type", "Target Polutant"])
+if comp_axis == "Model Type":
+    polut = mc2.selectbox("Polutant", num_cols)
+    mc2.dataframe(model_stats[model_stats['Polutant']==polut])
+else:
+    model = mc2.selectbox("Model Type", model_stats['Model'].unique().tolist())
+    mc2.dataframe(model_stats[model_stats["Model"]==model])
